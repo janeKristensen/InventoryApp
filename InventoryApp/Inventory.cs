@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
@@ -62,27 +63,23 @@ namespace InventoryManagement
 
         // To be implemented with GUI
         // Take input from user and add to database
-        public void PressButtonForNewSubstance(string name, string batchnumber, string unit, string amount)
+        public void PressButtonForNewSubstance(string name, string batchnumber, string unit, string amount, string type)
         {
             using (var db = new SubstanceContext())
             {
                 // Add to database and save
-                string type = "RS";
                 db.Add(new Substance(name, batchnumber, unit, Convert.ToInt32(amount), type));
                 db.SaveChanges();
             };
         }
 
 
-        public void PrintStock()
+        public List<Substance> GetStock()
         {
             using (var db = new SubstanceContext())
             {
                 var items = db.ReferenceSubstances.ToList();
-                foreach (var item in items)
-                {
-                    //Console.WriteLine($"{item.Name}, {item.BatchNumber}, {item.Unit}: {item.Stock}");
-                }
+                return items;
             }        
         }
     }

@@ -1,6 +1,15 @@
 ﻿using InventoryManagement;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Data;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+
 
 
 namespace InventoryApp
@@ -16,37 +25,35 @@ namespace InventoryApp
 
         public MainWindow()
         {
-           
+            InitializeComponent();
 
+            using (var db = new SubstanceContext())
+            {
+                var data = db.ReferenceSubstances.ToList();
+                DatabaseView.ItemsSource = data;
+            };
         }
 
-        private void BtnAddSubstance_Click(object sender, RoutedEventArgs e)
+        private void BtnNavigateNew_Click(object sender, RoutedEventArgs e)
         {
-            var name = txtBox_SubstanceName.Text;
-            var batch = txtBox_BatchNumber.Text;
-            var unit = txtBox_Unit.Text;
-            var amount = txtBox_Amount.Text;
-            
-            if (!string.IsNullOrEmpty(name) &&
-                !string.IsNullOrEmpty(batch) &&
-                !string.IsNullOrEmpty(unit) &&
-                !string.IsNullOrEmpty(amount))
-            {
-                try { 
-                    inventory.PressButtonForNewSubstance(name, batch, unit, amount);
-                }
-                catch
-                {
-                    //pop up with error
+            NavigationWindow window = new NavigationWindow();
+            window.Source = new Uri("NewSubstancePage.xaml", UriKind.Relative);
+            window.ShowsNavigationUI = false;
+            Uri iconUri = new Uri("D:\\Visual Studio stuff\\Projekts\\InventoryApp\\InventoryApp\\desktopfolder.ico", UriKind.RelativeOrAbsolute);
+            window.Icon = BitmapFrame.Create(iconUri);
+            window.Show();
+            this.Visibility = Visibility.Hidden;
+        }
 
-                    txtBox_SubstanceName.Clear();
-                    txtBox_BatchNumber.Clear();
-                    txtBox_Unit.Clear();
-                    txtBox_Amount.Clear();
-                }
-                    
-            }
+        private void OnInit(object sender, EventArgs e)
+        {
             
+                
+        }
+
+        private void NameCM_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

@@ -5,30 +5,66 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InventoryApp"
         mc:Ignorable="d"
+        Icon="D:\Visual Studio stuff\Projekts\InventoryApp\InventoryApp\desktopfolder.ico"
         Title="Inventory System" Height="450" Width="800">
-    <Grid Margin="10">
-        
+    
+
+    <Grid Margin="10,10,10,10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        
-        <Label Content="Names"/>
-        <ListBox x:Name="lstBox" Grid.Row="1"/>
-        <StackPanel Grid.Row="1" Grid.Column="1" Margin="5,0,0,0">
-            <TextBox x:Name="txtBox_SubstanceName"/>
-            <TextBox x:Name="txtBox_BatchNumber"/>
-            <TextBox x:Name="txtBox_Unit"/>
-            <TextBox x:Name="txtBox_Amount"/>
-            <Button x:Name="BtnAdd" Click="BtnAddSubstance_Click" Margin="5,0,0,0">Add Substance</Button>
-        </StackPanel>
 
+        <Label Content="Menu"/>
+        <Label Content="Inventory Stock" Grid.Column="1"/>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Button 
+                x:Name="Btn_NewSubstance" 
+                Click="BtnNavigateNew_Click" 
+                Grid.Row="1" 
+                Margin="0,2,2,2">
+                New Substance
+            </Button>
+        </Grid>
+        
+
+        <Grid Grid.Column="1" Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <ListView x:Name="DatabaseView">
+                <ListView.View>
+                    <GridView AllowsColumnReorder="true" ColumnHeaderToolTip="Inventory stock">
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Header="Substance" Width="200"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=BatchNumber}" Header="Batch Number" Width="100"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Unit}" Header="Unit" Width="100"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=RefType}" Header="Type" Width="100"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Stock}" Header="Amount" Width="100"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            
+        </Grid>
+        
     </Grid>
+
+
+
 </Window>
