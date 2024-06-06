@@ -26,7 +26,11 @@ namespace InventoryApp
         public MainWindow()
         {
             InitializeComponent();
+            OnInit();
+        }
 
+        public void OnInit()
+        {
             using (var db = new SubstanceContext())
             {
                 var data = db.ReferenceSubstances.ToList();
@@ -45,15 +49,15 @@ namespace InventoryApp
             this.Visibility = Visibility.Hidden;
         }
 
-        private void OnInit(object sender, EventArgs e)
+        private void GoToItemPage(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            
-                
-        }
-
-        private void NameCM_Click(object sender, RoutedEventArgs e)
-        {
-
+            NavigationWindow window = new NavigationWindow();
+            window.Source = new Uri("ItemPage.xaml", UriKind.Relative);
+            window.ShowsNavigationUI = false;
+            Uri iconUri = new Uri("D:\\Visual Studio stuff\\Projekts\\InventoryApp\\InventoryApp\\desktopfolder.ico", UriKind.RelativeOrAbsolute);
+            window.Icon = BitmapFrame.Create(iconUri);
+            window.Show();
+            this.Visibility = Visibility.Hidden;
         }
     }
 }

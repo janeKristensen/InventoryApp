@@ -49,10 +49,10 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <ListView x:Name="DatabaseView">
+            <ListView x:Name="DatabaseView" SelectionMode="Single" MouseDoubleClick="GoToItemPage">
                 <ListView.View>
                     <GridView AllowsColumnReorder="true" ColumnHeaderToolTip="Inventory stock">
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Header="Substance" Width="200"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Header="Substance" Width="200" />
                         <GridViewColumn DisplayMemberBinding="{Binding Path=BatchNumber}" Header="Batch Number" Width="100"/>
                         <GridViewColumn DisplayMemberBinding="{Binding Path=Unit}" Header="Unit" Width="100"/>
                         <GridViewColumn DisplayMemberBinding="{Binding Path=RefType}" Header="Type" Width="100"/>

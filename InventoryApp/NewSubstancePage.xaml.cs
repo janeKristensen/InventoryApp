@@ -23,11 +23,19 @@ namespace InventoryApp
     {
         // Singleton instance of inventory and Ordermanagement
         Inventory inventory = Inventory.GetInstance();
-        OrderManagement orderManagement = OrderManagement.GetInstance();
 
         public NewSubstancePage()
         {
             InitializeComponent();
+        }
+
+        public void BackToMain()
+        {
+            MainWindow mainWindow = Application.Current.MainWindow as MainWindow;
+            mainWindow.Visibility = Visibility.Visible;
+            Window win = (Window)this.Parent;
+            win.Close();
+            mainWindow.OnInit();
         }
 
         private void BtnAddSubstance_Click(object sender, RoutedEventArgs e)
@@ -57,17 +65,14 @@ namespace InventoryApp
                     txtBox_Type.Clear();
                     txtBox_Amount.Clear();
                 }
-
             }
 
+            BackToMain();
         }
 
         private void BtnCancelNew_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow mainWindow = Application.Current.MainWindow as MainWindow;
-            mainWindow.Visibility = Visibility.Visible;
-            Window win = (Window)this.Parent;
-            win.Close();
+            BackToMain();
         }
     }
 }

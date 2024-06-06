@@ -29,7 +29,7 @@ namespace InventoryManagement
 
         public string Name
         {
-            get; private set;
+            get; set;
         }
 
         [Key]
@@ -42,7 +42,7 @@ namespace InventoryManagement
 
         public string Unit
         {
-            get; private set;
+            get; set;
         }
 
         public int Stock
@@ -52,7 +52,7 @@ namespace InventoryManagement
 
         public string RefType
         {
-            get; private set;
+            get; set;
         } = string.Empty;
 
         public void addStock(int amount)

@@ -5,6 +5,9 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Security.Policy;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Shapes;
 using System.Xml.Linq;
 
 namespace InventoryManagement
@@ -47,6 +50,35 @@ namespace InventoryManagement
                     }
                 }
             };  
+        }
+
+        public void EditEntry(Substance s, int amount, string name, string batch, string type, string unit)
+        {
+            using (var db = new SubstanceContext())
+            {
+                var sub = db.ReferenceSubstances.Find(s.BatchNumber);
+                if (sub != null && s.BatchNumber == batch)
+                {
+                    sub.Name = name;
+                    sub.Unit = unit;
+                    sub.RefType = type;
+                    sub.Stock = amount;
+                    db.SaveChanges();
+                }
+                else
+                {
+                    /*
+                    var answer = MessageBox.Show("Changing batch number is not allowed. Would you like to create a new substance?", "Edit was not saved!", MessageBoxButton.YesNo);
+                    if (answer == MessageBoxResult.Yes)
+                    {
+                        // Add to database and save
+                        db.Add(new Substance(name, batch, unit, Convert.ToInt32(amount), type));
+                        db.SaveChanges();
+                        return sub;
+                    }*/
+
+                }
+            };
         }
 
 
