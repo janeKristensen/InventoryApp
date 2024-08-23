@@ -4,7 +4,8 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-
+using System.Windows.Media;
+using ExtensionMethods;
 
 namespace InventoryApp
 {
@@ -43,37 +44,30 @@ namespace InventoryApp
             txt_Stock.Text = substance.Stock.ToString();
         }
 
-        public void BackToMain()
-        {
-            MainWindow mainWindow = Application.Current.MainWindow as MainWindow;
-            mainWindow.MainFrame.Navigate(new Uri("SubstanceOverviewPage.xaml", UriKind.Relative));
-        }
-
         private void EditCancel_Click(object sender, RoutedEventArgs e)
         {
-            BackToMain();
+            ExtensionMethodsPages.NavigateTo("SubstanceOverviewPage.xaml");
         }
 
         private void EditSave_Click(object sender, RoutedEventArgs e)
         {
-            inventory.EditEntry(substance, Convert.ToInt32(txt_Stock.Text), txt_Name.Text, txt_Batch.Text, txt_Type.Text, txt_Unit.Text);
-            BackToMain();
+            inventory.EditEntry(substance, Convert.ToInt32(txt_Stock.Text), txt_Name.Text, txt_Type.Text, txt_Unit.Text);
+            ExtensionMethodsPages.NavigateTo("SubstanceOverviewPage.xaml");
         }
 
         private void EditDelete_Click(object sender, RoutedEventArgs e)
         {
             inventory.RemoveSubstance(substance);
-            BackToMain();
+            ExtensionMethodsPages.NavigateTo("SubstanceOverviewPage.xaml");
         }
 
-        private void Txt_Stock_Input(object sender, TextCompositionEventArgs e)
+        private void Txt_Stock_Input(object sender, TextChangedEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
-            if (regex.IsMatch(e.Text))
+            if (regex.IsMatch(txt_Stock.Text))
             {
                 MessageBox.Show("Stock must be a numeric value");
-                TextBox source = e.Source as TextBox;
-                source.Text = "";
+                txt_Stock.Background = Brushes.Red;
             }   
         }
     }

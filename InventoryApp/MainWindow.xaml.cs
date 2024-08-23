@@ -45,7 +45,7 @@ namespace InventoryApp
 
         private void BtnPrintOrders_Click(object sender, RoutedEventArgs e)
         {
-            orderManagement.PrintOrders();
+            orderManagement.PrintAllOrders();
         }
 
         private void BtnNavigateViewOrders_Click(object sender, RoutedEventArgs e)

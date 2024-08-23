@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using ExtensionMethods;
+using System.Windows.Markup;
+using System.Net;
 
 
 namespace InventoryApp
@@ -14,6 +17,7 @@ namespace InventoryApp
     internal partial class OrderPage : Page
     {
         private Order _order;
+        private OrderManagement _orderManagement = OrderManagement.GetInstance();
         private List<OrderDetail> _orderDetails = new List<OrderDetail>();
         private List<OrderItemsData> _orderData = new List<OrderItemsData>();
 
@@ -39,41 +43,19 @@ namespace InventoryApp
             this.txt_Receiver.Text = _order.Receiver;
             this.txt_Address.Text = _order.Address;
 
-            using (var db = new SubstanceContext())
-            {
-                _orderDetails = db.OrderDetails.Where(x => x.OrderId == _order.Id).ToList();
-                foreach (var item in _orderDetails)
-                {
-                    var substance = db.ReferenceSubstances.Where(x => x.Id == item.SubstanceId).First();
-                    _orderData.Add(new OrderItemsData(item.DetailId, substance.Name, substance.BatchNumber, substance.Unit ,item.Amount.ToString()));
-                } 
-            };
-
-            OrderDetailView.ItemsSource = _orderData;
+            OrderDetailView.ItemsSource = _orderManagement.GetOrderData(_order);
         }
 
         private void PrintOrder(object sender, RoutedEventArgs e)
         {
-            _order.PrintOrder();
-        }
-
-        private void BackToMain()
-        {
-            MainWindow mainWindow = Application.Current.MainWindow as MainWindow;
-            mainWindow.MainFrame.Navigate(new Uri("ViewOrderPage.xaml", UriKind.Relative));
+            _orderManagement.PrintOrder(_order);
         }
 
         private void SaveChanges(object sender, RoutedEventArgs e)
         {
-            using (var db = new SubstanceContext())
-            {
-                var data = db.Orders.Where(x => x.Id == _order.Id).First();
-
-                data.Receiver = txt_Receiver.Text;  
-                data.Address = txt_Address.Text;
-
-                db.SaveChanges();
-            }
+            _order.Receiver = txt_Receiver.Text;
+            _order.Address = txt_Address.Text;
+            _orderManagement.UpdateOrder(_order);
 
             txt_Receiver.IsEnabled = false;
             txt_Address.IsEnabled = false;
@@ -84,7 +66,6 @@ namespace InventoryApp
 
         private void EditOrder(object sender, RoutedEventArgs e)
         {
-
             txt_Receiver.IsEnabled = true;
             txt_Address.IsEnabled = true;
             OrderDetailView.IsEnabled = true;
@@ -95,14 +76,18 @@ namespace InventoryApp
         private void OrderDetailView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var item = (OrderItemsData)OrderDetailView.SelectedItem;
-            OrderItemPage p = new OrderItemPage(item, _order);
-            MainWindow mainWindow = Application.Current.MainWindow as MainWindow;
-            mainWindow.MainFrame.NavigationService.Navigate(p);
+            ExtensionMethodsPages.NavigateToPage(new OrderItemPage(item, _order));
         }
 
         private void CancelOrder(object sender, RoutedEventArgs e)
         {
-            BackToMain();
+            ExtensionMethodsPages.NavigateTo("ViewOrderPage.xaml");
+        }
+
+        private void DeleteOrder(object sender, RoutedEventArgs e)
+        {
+            _orderManagement.DeleteOrder(_order);
+            ExtensionMethodsPages.NavigateTo("ViewOrderPage.xaml");
         }
     }
 }

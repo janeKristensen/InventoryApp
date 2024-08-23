@@ -57,9 +57,9 @@
             </Grid.RowDefinitions>
 
             <StackPanel x:Name="ItemsView_Btns" Grid.Row="1">
-                <Button x:Name="Btn_EditDelete" Content="Delete" Click="EditDelete_Click" Width="100" Margin="0,2,0,2"/>
                 <Button x:Name="Btn_EditSave" Content="Save" Click="EditSave_Click" Width="100" Margin="0,2,0,2"/>
                 <Button x:Name="Btn_EditCancel" Content="Cancel" Click="EditCancel_Click" Width="100" Margin="0,2,0,2"/>
+                <Button x:Name="Btn_EditDelete" Content="Delete" Click="EditDelete_Click" Width="100" Margin="0,20,0,2" Background="Tomato"/>
             </StackPanel>
         </Grid>
 

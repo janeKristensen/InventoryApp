@@ -24,7 +24,7 @@ namespace InventoryApp
     /// 
     internal partial class ViewOrderPage : Page
     {
-        private readonly MainWindow _main = Application.Current.MainWindow as MainWindow;
+        private OrderManagement _orderManagement = OrderManagement.GetInstance();
 
         public ViewOrderPage()
         {
@@ -36,8 +36,7 @@ namespace InventoryApp
         {
             using (var db = new SubstanceContext())
             {
-                var orders = db.Orders.ToList();
-                OrderListView.ItemsSource = orders;
+                OrderListView.ItemsSource = _orderManagement.GetAllOrders();
             }       
         }
 
@@ -46,10 +45,8 @@ namespace InventoryApp
             Order item = OrderListView.SelectedItem as Order;
             if (item != null)
             {
-                OrderPage p = new OrderPage(item);
-                _main.MainFrame.NavigationService.Navigate(p);
-            }
-            
+                ExtensionMethodsPages.NavigateToPage(new OrderPage(item));
+            }   
         }
     }
 }

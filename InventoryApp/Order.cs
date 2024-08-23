@@ -26,19 +26,7 @@ namespace InventoryManagement
         public string Address { get; set; }
         public List<OrderDetail> OrderDetails { get; private set; }
 
-        public void PrintOrder()
-        {
-            using (var db = new SubstanceContext())
-            {
-                OrderDetails = db.OrderDetails.Where(x => x.OrderId == this.Id).ToList();
-                Console.WriteLine($"{Receiver}\n{Address}\nSubstance order:");
-                foreach (var item in OrderDetails)
-                {
-                    item.Substance = db.ReferenceSubstances.Where(x => x.Id == item.SubstanceId).First();
-                    Console.WriteLine($"{item.Substance.ToString()}: {item.Amount}");
-                }
-            }
-        }
+        
     }
 
 }

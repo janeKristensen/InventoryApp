@@ -1,20 +1,16 @@
 ﻿
-using System;
+
 using System.Collections.Generic;
-using System.Drawing;
-using System.Globalization;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using System.Security.Policy;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Shapes;
-using System.Xml.Linq;
+
 
 namespace InventoryManagement
 {
     internal interface IListener
     {
-        void Update(Order order, List<(int, int)> orderdetails);
+        void Update(Order order, List<OrderItemsData> orderdetails);
     }
 
 
@@ -34,35 +30,30 @@ namespace InventoryManagement
 
 
         // Implementation of interface method update
-        public void Update(Order order, List<(int, int)> orderdetails)
+        public void Update(Order order, List<OrderItemsData> orderdetails)
         {
-            //Console.WriteLine("\nOrder received in inventory!\n");
-            
             using (var db = new SubstanceContext())
             {
                 foreach (var line in orderdetails)
                 {
-                    var sub = db.ReferenceSubstances.Where(e => e.Id == line.Item1).First();
+                    var sub = db.ReferenceSubstances.Find(line.Id);
                     if (sub != null)
                     {
-                        sub.Stock -= line.Item2;
+                        sub.SubtractStock(line.Amount);
                         db.SaveChanges();
                     }
                 }
             };  
         }
 
-        public void EditEntry(Substance s, int amount, string name, string batch, string type, string unit)
+        public void EditEntry(Substance substance, int amount, string name, string type, string unit)
         {
             using (var db = new SubstanceContext())
             {
-                var sub = db.ReferenceSubstances.Find(s.Id);
-
-                    sub.Name = name;
-                    sub.Unit = unit;
-                    sub.RefType = type;
-                    sub.Stock = amount;
-                    db.SaveChanges();
+                var db_sub = db.ReferenceSubstances.Find(substance.Id);
+                substance.EditSubstance(amount, name, type, unit);
+                db.Entry(db_sub).CurrentValues.SetValues(substance);
+                db.SaveChanges();
 
             };
         }
@@ -72,33 +63,40 @@ namespace InventoryManagement
         {
             using (var db = new SubstanceContext())
             {
-                db.ReferenceSubstances.Attach(substance);
-                db.ReferenceSubstances.Remove(substance);
+                var details = db.OrderDetails.Where(x => x.SubstanceId == substance.Id).ToList();
+                foreach (var item in details)
+                {
+                    var order = db.Orders.Find(item.OrderId);
+                    db.Entry(order).State = EntityState.Deleted;
+                    db.OrderDetails.Remove(item);
+                }
+                db.Entry(substance).State = EntityState.Deleted;
                 db.SaveChanges();
             };
         }
 
-
-        // To be implemented with GUI
-        // Take input from user and add to database
         public void NewSubstance(string name, string batchnumber, string unit, int amount, string type)
         {
             using (var db = new SubstanceContext())
             {
-                // Add to database and save
-                Substance substance = new Substance(name, batchnumber, unit, amount, type);
-                var sub = db.Add(substance);
+                db.Add(new Substance(name, batchnumber, unit, amount, type));
                 db.SaveChanges();
             };
         }
 
+        public Substance FindSubstance(int id)
+        {
+            using (var db = new SubstanceContext())
+            {
+                return db.ReferenceSubstances.Find(id);
+            };
+        }
 
         public List<Substance> GetStock()
         {
             using (var db = new SubstanceContext())
             {
-                var items = db.ReferenceSubstances.ToList();
-                return items;
+                return db.ReferenceSubstances.ToList();
             }        
         }
     }

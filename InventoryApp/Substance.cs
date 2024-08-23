@@ -48,6 +48,14 @@ namespace InventoryManagement
             return $"{Name}, {BatchNumber}, {Unit}";
         }
 
+        public void EditSubstance(int amount, string name, string type, string unit)
+        {
+            Stock = amount;
+            Name = name;
+            RefType = type;
+            Unit = unit;
+        }
+
         public void AddStock(int amount)
         {
             this.Stock += amount;

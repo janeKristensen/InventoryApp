@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -40,24 +41,28 @@ namespace InventoryApp
                     txtBox_Unit.Text, 
                     Convert.ToInt32(txtBox_Amount.Text), 
                     txtBox_Type.Text);
+
+                ExtensionMethodsPages.NavigateTo("SubstanceOverviewPage.xaml");
             }
             catch (Exception exception)
             {
                 MessageBox.Show($"An error occured while adding the substance. Try again!\n{exception}");
-
-                txtBox_SubstanceName.Clear();
-                txtBox_BatchNumber.Clear();
-                txtBox_Unit.Clear();
-                txtBox_Type.Clear();
-                txtBox_Amount.Clear();
-            }
-
-            ExtensionMethodsPages.NavigateTo("SubstanceOverviewPage.xaml");
+            }           
         }
 
         private void BtnCancelNew_Click(object sender, RoutedEventArgs e)
         {
             ExtensionMethodsPages.NavigateTo("SubstanceOverviewPage.xaml");
+        }
+
+        private void Txt_Amount_Input(object sender, TextChangedEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            if (regex.IsMatch(txtBox_Amount.Text))
+            {
+                MessageBox.Show("Stock must be a numeric value");
+                txtBox_Amount.Background = Brushes.Red;
+            }
         }
     }
 }

@@ -1,19 +1,11 @@
-﻿using InventoryManagement;
+﻿using ExtensionMethods;
+using InventoryManagement;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 
 namespace InventoryApp
 {
@@ -24,10 +16,9 @@ namespace InventoryApp
     {
 
         private OrderItemsData _item;
-        private OrderDetail _orderDetail;
         private Order _order;
         // Singleton instance of inventory and Ordermanagement
-        private readonly Inventory inventory = Inventory.GetInstance();
+        private readonly OrderManagement _orderManagement = OrderManagement.GetInstance();
 
 
         public OrderItemPage()
@@ -52,41 +43,26 @@ namespace InventoryApp
             txt_Name.Text = _item.Name;
             txt_Batch.Text = _item.Batch;
             txt_Unit.Text = _item.Unit;
-            txt_Amount.Text = _item.Amount;
-        }
-
-        public void BackToOrder()
-        {
-            MainWindow mainWindow = Application.Current.MainWindow as MainWindow;
-            OrderPage p = new OrderPage(_order);
-            mainWindow.MainFrame.Navigate(p);
+            txt_Amount.Text = _item.Amount.ToString();
         }
 
         private void EditCancel_Click(object sender, RoutedEventArgs e)
         {
-            BackToOrder();
+            ExtensionMethodsPages.NavigateToPage(new OrderPage(_order));
         }
 
         private void EditSave_Click(object sender, RoutedEventArgs e)
         {
-            using (var db = new SubstanceContext())
-            {
-                var record = db.OrderDetails.Where(x => x.DetailId == _item.Id).First();
-                record.Amount = Convert.ToInt32(txt_Amount.Text);
-                db.SaveChanges();
-            }
+            _item.Amount = Convert.ToInt32(txt_Amount.Text);
+            _orderManagement.UpdateOrderDetail(_order, _item);
 
-            BackToOrder();
+            ExtensionMethodsPages.NavigateToPage(new OrderPage(_order));
         }
 
         private void EditDelete_Click(object sender, RoutedEventArgs e)
         {
-            using (var db = new SubstanceContext())
-            {
-                db.Remove(db.OrderDetails.Single(x => x.DetailId == _item.Id));
-                db.SaveChanges();
-            }
-                BackToOrder();
+            _orderManagement.DeleteDetail(_item);
+            ExtensionMethodsPages.NavigateToPage(new OrderPage(_order));
         }
 
         private void Txt_Amount_Input(object sender, TextCompositionEventArgs e)

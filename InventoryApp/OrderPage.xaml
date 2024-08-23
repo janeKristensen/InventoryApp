@@ -43,7 +43,8 @@
                 <StackPanel x:Name="BtnOrderPage" Grid.Column="1" VerticalAlignment="Center">
                     <Button x:Name="Btn_PrintOrder" Content="Print" Click="PrintOrder" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,2"/>
                     <Button x:Name="Btn_EditOrder" Content="Edit" Click="EditOrder" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,2,0,2"/>
-                    <Button x:Name="Btn_CancelOrder" Content="Cancel" Click="CancelOrder" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,2,0,10"/>
+                    <Button x:Name="Btn_CancelOrder" Content="Cancel" Click="CancelOrder" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,2,0,2"/>
+                    <Button x:Name="Btn_DeleteOrder" Content="Delete" Click="DeleteOrder" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20,0,0" Background="Tomato"/>
                 </StackPanel>
             </Grid>
 
@@ -56,10 +57,34 @@
                      ScrollViewer.VerticalScrollBarVisibility="Auto" SelectionChanged="OrderDetailView_SelectionChanged">   
                     <ListView.View>
                         <GridView AllowsColumnReorder="true" ColumnHeaderToolTip="Ordered items">
-                            <GridViewColumn x:Name="SubstanceColumn" DisplayMemberBinding="{Binding Path=Name}" Header="Substance" Width="300"/>
-                            <GridViewColumn DisplayMemberBinding="{Binding Path=Batch}" Header="Batch" Width="100"/>
-                            <GridViewColumn DisplayMemberBinding="{Binding Path=Unit}" Header="Unit" Width="100"/>
-                            <GridViewColumn DisplayMemberBinding="{Binding Path=Amount}" Header="Amount" Width="105"/>
+                            <GridViewColumn x:Name="SubstanceColumn" Header="Substance" Width="300">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=Name}" HorizontalAlignment="Center" TextAlignment="Left"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn  Header="Batch" Width="100">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=Batch}" HorizontalAlignment="Center" TextAlignment="Center"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Unit" Width="100">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=Unit}" HorizontalAlignment="Center" TextAlignment="Center"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Amount" Width="105">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=Amount}" HorizontalAlignment="Center" TextAlignment="Center"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
                         </GridView>
                     </ListView.View>
                 </ListView>

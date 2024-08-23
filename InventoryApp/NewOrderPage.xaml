@@ -10,18 +10,6 @@
 
     <Page.Resources>
         <local:MainWindow x:Key="Main"/>
-
-        <Style x:Key="CustomTextBoxStyle" TargetType="TextBox">
-            <Setter Property="Background" Value="White"/>
-            <Style.Triggers>
-                <Trigger Property="Validation.HasError" Value="True">
-                    <Trigger.Setters>
-                        <Setter Property="Background" Value="Red"/>
-                    </Trigger.Setters>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
     </Page.Resources>
 
     <Grid Margin="10,10,10,10">
@@ -90,10 +78,11 @@
                 </Grid.ColumnDefinitions>
 
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="25"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Button x:Name="BtnAddSubstance" Click="NewSubstance_Click" Width="100" Content="Add Substance" HorizontalAlignment="Left" Margin="2,4,2,4"/>
+                <Button x:Name="BtnAddSubstance" Grid.Row="1" Click="NewSubstance_Click" Width="100" Content="Add Substance" HorizontalAlignment="Left" Margin="2,2,2,2"/>
             </Grid>
         </Grid>
 
@@ -105,8 +94,10 @@
                 ScrollViewer.VerticalScrollBarVisibility="Auto">    
                 <ListView.View>
                     <GridView AllowsColumnReorder="true" ColumnHeaderToolTip="Inventory stock">
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Header="Substance" Width="200" />
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=Amount}" Header="Amount" Width="100"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Header="Substance" Width="250" TextBlock.TextAlignment="Left"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Batch}" Header="Batch" Width="100" TextBlock.TextAlignment="Center"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Unit}" Header="Unit" Width="125" TextBlock.TextAlignment="Center"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Amount}" Header="Amount" Width="127" TextBlock.TextAlignment="Center"/>
                         
                     </GridView>
                 </ListView.View>

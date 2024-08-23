@@ -12,7 +12,7 @@ namespace InventoryAppTest
         [TestMethod]
         public void Test_Stock()
         {
-            var substance = new InventoryManagement.Substance("Betamethasone", "B02", "10 mg/vial", 200, "RS");
+            Substance substance = new("Betamethasone", "B02", "10 mg/vial", 200, "RS");
             Assert.IsNotNull(substance);
             substance.SubtractStock(50);
             Assert.AreEqual(150, substance.Stock);
@@ -24,13 +24,13 @@ namespace InventoryAppTest
         [TestMethod]
         public void Test_Stock_Exception()
         {
-            Assert.ThrowsException<System.ArgumentOutOfRangeException>(() => new InventoryManagement.Substance("Betamethasone", "B02", "10 mg/vial", -10, "RS"));
+            Assert.ThrowsException<System.ArgumentOutOfRangeException>(() => new Substance("Betamethasone", "B02", "10 mg/vial", -10, "RS"));
         }
 
         [TestMethod]
         public void Test_Edit_Substance()
         {
-            Substance sub = new Substance("Betamethasone", "B02", "10 mg / vial", 200, "RS");
+            Substance sub = new("Betamethasone", "B02", "10 mg / vial", 200, "RS");
 
             try
             {
@@ -44,14 +44,4 @@ namespace InventoryAppTest
         }
     }
 
-    [TestClass]
-    public class OrderTest
-    {
-        [TestMethod]
-        public void Test_Print_Order() 
-        {
-            var order = new Order("test", "text_address");
-
-        }
-    }
 }

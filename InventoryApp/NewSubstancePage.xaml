@@ -35,7 +35,7 @@
             <Label Content="Reference type"/>
             <TextBox x:Name="txtBox_Type" Margin="1,1,1,1" MaxLength="50"/>
             <Label Content="Amount in stock"/>
-            <TextBox x:Name="txtBox_Amount" Margin="1,1,1,1" />
+            <TextBox x:Name="txtBox_Amount" Margin="1,1,1,1" TextChanged="Txt_Amount_Input"/>
         </StackPanel>
             <Grid Grid.Column="1" Grid.Row="2">
             <Grid.RowDefinitions>

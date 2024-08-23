@@ -11,18 +11,6 @@
 
     <Page.Resources>
         <local:MainWindow x:Key="Main"/>
-
-        <Style x:Key="CustomTextBoxStyle" TargetType="TextBox">
-            <Setter Property="Background" Value="White"/>
-            <Style.Triggers>
-                <Trigger Property="Validation.HasError" Value="True">
-                    <Trigger.Setters>
-                        <Setter Property="Background" Value="Red"/>
-                    </Trigger.Setters>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        
     </Page.Resources>
 
     <Grid Margin="10,10,10,10">
@@ -47,7 +35,7 @@
             <Label Content="Substance Type"/>
             <TextBox x:Name="txt_Type"/>
             <Label Content="Stock"/>
-            <TextBox x:Name="txt_Stock" Style="{StaticResource CustomTextBoxStyle}" PreviewTextInput="Txt_Stock_Input"/>
+            <TextBox x:Name="txt_Stock"  TextChanged="Txt_Stock_Input"/>
         </StackPanel>
 
         
@@ -59,9 +47,10 @@
             </Grid.RowDefinitions>
             
             <StackPanel x:Name="ItemsView_Btns" Grid.Row="1">
-                <Button x:Name="Btn_EditDelete" Content="Delete" Click="EditDelete_Click" Width="100" Margin="0,2,0,2"/>
+
                 <Button x:Name="Btn_EditSave" Content="Save" Click="EditSave_Click" Width="100" Margin="0,2,0,2"/>
                 <Button x:Name="Btn_EditCancel" Content="Cancel" Click="EditCancel_Click" Width="100" Margin="0,2,0,2"/>
+                <Button x:Name="Btn_EditDelete" Content="Delete" Click="EditDelete_Click" Width="100" Margin="0,20,0,2" Background="Tomato"/>
             </StackPanel>
         </Grid>
         

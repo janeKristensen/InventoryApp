@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using ExtensionMethods;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using System.ComponentModel;
+using System.Windows.Markup;
 
 namespace InventoryApp
 {
@@ -25,8 +26,8 @@ namespace InventoryApp
 
     internal partial class NewOrderPage : Page
     {
-        private List<(int, int)> orderItems = new List<(int, int)>();
-
+        private Inventory inventory = Inventory.GetInstance();
+        private OrderManagement orderManagement = OrderManagement.GetInstance();
         private List<OrderItemsData> orderData = new List<OrderItemsData>();
         ICollectionView view;
 
@@ -38,19 +39,13 @@ namespace InventoryApp
 
         private void OnInit()
         {
-            using (var db = new SubstanceContext())
-            {
-                var substanceItems = db.ReferenceSubstances.ToList();
-                comboBoxItems.ItemsSource = substanceItems;
-            };
-
+            comboBoxItems.ItemsSource = inventory.GetStock();
             view = CollectionViewSource.GetDefaultView(orderData);
         }
 
         private void NewOrderSubmit_Click(object sender, RoutedEventArgs e)
         {
-            OrderManagement orderManagement = OrderManagement.GetInstance();
-            orderManagement.AddOrder(txt_Receiver.Text, txt_Address.Text, orderItems);
+            orderManagement.AddOrder(txt_Receiver.Text, txt_Address.Text, orderData);
             ExtensionMethodsPages.NavigateTo("SubstanceOverviewPage.xaml");
         }
 
@@ -61,14 +56,8 @@ namespace InventoryApp
 
         private void NewSubstance_Click(object sender, RoutedEventArgs e)
         {
-            (int, int) t = (Convert.ToInt32(comboBoxItems.SelectedValue), Convert.ToInt32(txt_Amount.Text));
-            orderItems.Add(t);
-            using (var db = new SubstanceContext())
-            {
-                var data = db.ReferenceSubstances.Where(x => x.Id == Convert.ToInt32(comboBoxItems.SelectedValue)).First();
-                OrderItemsData order_items = new OrderItemsData(data.Id, data.Name, data.BatchNumber, data.Unit, txt_Amount.Text);
-                orderData.Add(order_items);
-            };
+            var data = inventory.FindSubstance(Convert.ToInt32(comboBoxItems.SelectedValue));
+            orderData.Add(new OrderItemsData(data.Id, data.Name, data.BatchNumber, data.Unit, Convert.ToInt32(txt_Amount.Text)));
 
             OrderView.ItemsSource = orderData;
             view.Refresh();
@@ -78,3 +67,4 @@ namespace InventoryApp
         }
     }
 }
+
