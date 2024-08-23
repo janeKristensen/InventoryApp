@@ -1,0 +1,121 @@
+﻿<Page x:Class="InventoryApp.NewOrderPage"
+      x:ClassModifier="internal"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:InventoryApp"
+      mc:Ignorable="d" 
+      Title="New order" Height="450" Width="630">
+
+    <Page.Resources>
+        <local:MainWindow x:Key="Main"/>
+
+        <Style x:Key="CustomTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Background" Value="White"/>
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Trigger.Setters>
+                        <Setter Property="Background" Value="Red"/>
+                    </Trigger.Setters>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </Page.Resources>
+
+    <Grid Margin="10,10,10,10">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="125"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel x:Name="ItemsView">
+                <Label Content="Receiver" Width="300" HorizontalAlignment="Center"/>
+                <TextBox x:Name="txt_Receiver" Width="300" HorizontalAlignment="Center"/>
+                <Label Content="Address" Width="300" HorizontalAlignment="Center"/>
+                <TextBox x:Name="txt_Address" Width="300" HorizontalAlignment="Center"/>
+            </StackPanel>
+
+            <StackPanel x:Name="BtnNewOrder" Grid.Column="1" VerticalAlignment="Center">
+                <Button x:Name="Btn_NewOrderSubmit" Content="Submit" Click="NewOrderSubmit_Click" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,2"/>
+                <Button x:Name="Btn_NewOrderCancel" Content="Cancel" Click="NewOrderCancel_Click" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,2,0,10"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <StackPanel  Grid.Column="0" Grid.Row="1">
+                <Label Content="Substance" Width="300" HorizontalAlignment="Left"/>
+                <ComboBox Name="comboBoxItems" Text="Substances" IsEditable="true" IsReadOnly="False" SelectedValuePath="Id" Width="300" HorizontalAlignment="Left" >
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <TextBlock Text ="{Binding}"/>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Label Content="Amount" Width="300" HorizontalAlignment="Left"/>
+                <TextBox x:Name="txt_Amount" Width="300" HorizontalAlignment="Left" Margin="2,2,2,10"/>
+            </StackPanel>
+
+            <Grid Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Button x:Name="BtnAddSubstance" Click="NewSubstance_Click" Width="100" Content="Add Substance" HorizontalAlignment="Left" Margin="2,4,2,4"/>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="3">
+            <ListView 
+                x:Name="OrderView" 
+                SelectionMode="Single"
+                ScrollViewer.CanContentScroll="True" 
+                ScrollViewer.VerticalScrollBarVisibility="Auto">    
+                <ListView.View>
+                    <GridView AllowsColumnReorder="true" ColumnHeaderToolTip="Inventory stock">
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Header="Substance" Width="200" />
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Amount}" Header="Amount" Width="100"/>
+                        
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+        </Grid>
+
+       
+
+    </Grid>
+
+</Page>
