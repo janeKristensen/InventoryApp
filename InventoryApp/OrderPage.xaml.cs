@@ -18,8 +18,6 @@ namespace InventoryApp
     {
         private Order _order;
         private OrderManagement _orderManagement = OrderManagement.GetInstance();
-        private List<OrderDetail> _orderDetails = new List<OrderDetail>();
-        private List<OrderItemsData> _orderData = new List<OrderItemsData>();
 
         public OrderPage()
         {

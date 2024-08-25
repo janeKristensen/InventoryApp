@@ -78,11 +78,11 @@ namespace InventoryManagement
             }
         }
 
-        public void UpdateOrderDetail(Order order, OrderItemsData item)
+        public void UpdateOrderDetail(OrderItemsData item)
         {
             using (var db = new SubstanceContext())
             {
-                var detail = db.OrderDetails.Find(item.Id);
+                var detail = db.OrderDetails.Where(x => x.SubstanceId == item.Id).First();
                 var substance = db.ReferenceSubstances.Find(detail.SubstanceId);
                 if (item.Amount > detail.Amount)
                 {
@@ -104,11 +104,15 @@ namespace InventoryManagement
             {
                 var db_order = db.Orders.Find(order.Id);
                 var details = db.OrderDetails.Where(x => x.OrderId == order.Id).ToList();
-                foreach(var item in details)
+                if(details != null)
                 {
-                    db.OrderDetails.Remove(item);
+                    foreach (var item in details)
+                    {
+                        db.OrderDetails.Remove(item);
+                    }
+                    db.SaveChanges();
                 }
-                
+
                 db.Entry(db_order).State = EntityState.Deleted;
                 db.SaveChanges();
             }

@@ -54,7 +54,7 @@ namespace InventoryApp
         private void EditSave_Click(object sender, RoutedEventArgs e)
         {
             _item.Amount = Convert.ToInt32(txt_Amount.Text);
-            _orderManagement.UpdateOrderDetail(_order, _item);
+            _orderManagement.UpdateOrderDetail(_item);
 
             ExtensionMethodsPages.NavigateToPage(new OrderPage(_order));
         }

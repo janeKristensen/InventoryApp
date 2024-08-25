@@ -18,6 +18,7 @@ namespace InventoryManagement
         public SubstanceContext() { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
+            
             => options.UseSqlServer($"Data Source ={ConfigurationManager.AppSettings["server"]}; Integrated Security = SSPI; TrustServerCertificate=True; User Instance = false; Database = Substances;");
 
         
@@ -31,9 +32,6 @@ namespace InventoryManagement
 
             modelBuilder.Entity<OrderDetail>().ToTable("OrderDetails");
             modelBuilder.Entity<OrderDetail>().HasKey(x => x.DetailId);
-            //modelBuilder.Entity<OrderDetail>().HasKey(ac => new { ac.OrderId, ac.SubstanceId });
-            /*modelBuilder.Entity<OrderDetail>().HasOne(a => a.Order).WithMany(b => b.OrderDetails).HasForeignKey(ac => ac.DetailId);
-            modelBuilder.Entity<OrderDetail>().HasOne(d => d.Substance).WithMany(b => b.OrderDetails).HasForeignKey(ac => ac.DetailId);*/
         }
     }
 }

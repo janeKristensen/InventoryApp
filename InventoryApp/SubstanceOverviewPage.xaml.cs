@@ -22,8 +22,7 @@ namespace InventoryApp
     /// </summary>
     internal partial class SubstanceOverviewPage : Page
     {
-        private readonly MainWindow _main = Application.Current.MainWindow as MainWindow;
-
+        private Inventory _inventory = Inventory.GetInstance();
         public SubstanceOverviewPage()
         {
             InitializeComponent();
@@ -32,12 +31,7 @@ namespace InventoryApp
 
         public void OnInit()
         {
-
-            using (var db = new SubstanceContext())
-            {
-                var data = db.ReferenceSubstances.ToList();
-                DatabaseView.ItemsSource = data;
-            };
+            DatabaseView.ItemsSource = _inventory.GetStock();
         }
 
         private void NavigateItemsPage(object sender, MouseButtonEventArgs e)
@@ -45,11 +39,8 @@ namespace InventoryApp
             Substance item = DatabaseView.SelectedItem as Substance;
             if (item != null)
             {
-                ItemPage p = new ItemPage(item);
-                this.NavigationService.Navigate(p);
+                this.NavigationService.Navigate(new ItemPage(item));
             } 
         }
-
-       
     }
 }

@@ -10,6 +10,8 @@ namespace InventoryManagement
 {
     internal class Substance
     {
+        private int _stock;
+
         public Substance(string Name, string BatchNumber, string Unit, int Stock, string RefType)
         {
             this.Name = Name;
@@ -39,7 +41,18 @@ namespace InventoryManagement
 
         public string Unit { get; set; }
 
-        public int Stock { get; set; }
+        public int Stock 
+        { 
+            get { return _stock; }
+            set
+            {
+                if (value <= 0)
+                {
+                    throw new ArgumentOutOfRangeException("Stock must be more than 0!", nameof(_stock));
+                }
+                _stock = value;
+            }
+        }
 
         public string RefType { get; set; } = string.Empty;
 

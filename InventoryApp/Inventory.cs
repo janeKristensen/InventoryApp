@@ -64,12 +64,20 @@ namespace InventoryManagement
             using (var db = new SubstanceContext())
             {
                 var details = db.OrderDetails.Where(x => x.SubstanceId == substance.Id).ToList();
-                foreach (var item in details)
+                if(details != null)
                 {
-                    var order = db.Orders.Find(item.OrderId);
-                    db.Entry(order).State = EntityState.Deleted;
-                    db.OrderDetails.Remove(item);
+                    foreach (var item in details)
+                    {
+                        var order = db.Orders.Find(item.OrderId);
+                        if(order != null)
+                        {
+                            db.Entry(order).State = EntityState.Deleted;
+                        }
+                        
+                        db.OrderDetails.Remove(item);
+                    }
                 }
+
                 db.Entry(substance).State = EntityState.Deleted;
                 db.SaveChanges();
             };
